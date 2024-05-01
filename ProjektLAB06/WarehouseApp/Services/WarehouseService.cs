@@ -67,5 +67,17 @@ namespace WarehouseApp.Services
                 throw;
             }
         }
+
+        public int AddProductToWarehouseThroughProcedure(ProductAddRequest request)
+        {
+            try
+            {
+                return _product_warehouseRepository.AddProductToWareHouseThroughProcedure(request);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

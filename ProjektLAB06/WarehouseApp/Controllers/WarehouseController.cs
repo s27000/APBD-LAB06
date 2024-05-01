@@ -12,7 +12,7 @@ namespace WarehouseApp.Controllers
         public WarehouseController(IWarehouseService warehouseService) {
             _warehouseService = warehouseService;
         }
-        [HttpPost]
+        [HttpPost("Zadanie 1")]
         public IActionResult AddProductToWarehouse(ProductAddRequest product)
         {
             try
@@ -21,6 +21,19 @@ namespace WarehouseApp.Controllers
                 return Ok("Created new Product_Warehouse entry: Key = " + WarehouseProductKey);
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("Zadanie 2")]
+        public IActionResult AddProductToWarehouseThroughProcedure(ProductAddRequest product)
+        {
+            try
+            {
+                var WarehouseProductKey = _warehouseService.AddProductToWarehouseThroughProcedure(product);
+                return Ok("Created new Product_Warehouse entry: Key = " + WarehouseProductKey);
+            }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

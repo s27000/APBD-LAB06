@@ -6,5 +6,6 @@ namespace WarehouseApp.Repositories
     {
         bool OrderExistsInWarehouse(int IdOrder);
         int AddProductToWarehouse(ProductAddRequest request, int IdOrder, double Price);
+        int AddProductToWareHouseThroughProcedure(ProductAddRequest request);
     }
 }

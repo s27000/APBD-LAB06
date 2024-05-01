@@ -56,5 +56,28 @@ namespace WarehouseApp.Repositories
             int dr = (int)cmd.ExecuteScalar();
             return dr;
         }
+
+        public int AddProductToWareHouseThroughProcedure(ProductAddRequest request)
+        {
+            try
+            {
+                using var con = new SqlConnection(_ConnectionString);
+                con.Open();
+
+                using var cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "EXEC AddProductToWarehouse @IdProduct, @IdWarehouse, @Amount, @CreatedAt";
+                cmd.Parameters.AddWithValue("@IdWarehouse", request.IdWarehouse);
+                cmd.Parameters.AddWithValue("@IdProduct", request.IdProduct);
+                cmd.Parameters.AddWithValue("@Amount", request.Amount);
+                cmd.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
+                var dr = cmd.ExecuteScalar();
+                return Decimal.ToInt32((decimal)dr);
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
     }
 }

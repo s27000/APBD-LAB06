@@ -21,11 +21,51 @@ namespace WarehouseApp.Services
             _warehouseRepository = warehouseRepository;
             _orderRepository = orderRepository;
         }
-        public int AddProductToWarehouse(ProductAddRequest product)
+        public int AddProductToWarehouse(ProductAddRequest request)
         {
-            Console.WriteLine(_warehouseRepository.WarehouseExists(product.IdWarehouse));
-            Console.WriteLine(_productRepository.ProductExists(product.IdProduct));
-            return 1;
+            try
+            {
+                VerifyProductAddRequest(request);
+                int IdOrder = _orderRepository.GetOrderId(request.IdProduct, request.Amount, request.CreatedAt);
+                VerifyOrderIdInWarehouse(IdOrder);
+                _orderRepository.FufillOrder(IdOrder);
+                return ProcessRequest(request, IdOrder);
+            }catch(Exception)
+            {
+                throw;
+            }
+        }
+
+        private void VerifyProductAddRequest(ProductAddRequest request)
+        {
+            if (!_warehouseRepository.WarehouseExists(request.IdWarehouse))
+            {
+                throw new Exception("Warehouse not found");
+            }
+            if (!_productRepository.ProductExists(request.IdProduct))
+            {
+                throw new Exception("Product not found");
+            }
+        }
+
+        private void VerifyOrderIdInWarehouse(int IdOrder)
+        {
+            if (_product_warehouseRepository.OrderExistsInWarehouse(IdOrder)){
+                throw new Exception("Order is already in a warhouse");
+            }
+        }
+
+        private int ProcessRequest(ProductAddRequest request, int IdOrder)
+        {
+            try
+            {
+                double Price = request.Amount * _productRepository.getPrice(request.IdProduct);
+                return _product_warehouseRepository.AddProductToWarehouse(request, IdOrder, Price);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

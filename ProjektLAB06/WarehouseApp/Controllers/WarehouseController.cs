@@ -15,8 +15,15 @@ namespace WarehouseApp.Controllers
         [HttpPost]
         public IActionResult AddProductToWarehouse(ProductAddRequest product)
         {
-            var WarehouseProductKey = _warehouseService.AddProductToWarehouse(product);
-            return Ok(WarehouseProductKey);
+            try
+            {
+                var WarehouseProductKey = _warehouseService.AddProductToWarehouse(product);
+                return Ok("Created new Product_Warehouse entry: Key = " + WarehouseProductKey);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -4,6 +4,6 @@ namespace WarehouseApp.Services
 {
     public interface IWarehouseService
     {
-        int AddProductToWarehouse(ProductAddRequest product);
+        int AddProductToWarehouse(ProductAddRequest request);
     }
 }

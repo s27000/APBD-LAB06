@@ -15,6 +15,7 @@ namespace WarehouseApp.Repositories
             cmd.Connection = con;
             cmd.CommandText = "SELECT COUNT(*) FROM Warehouse WHERE IdWarehouse = @Id";
             cmd.Parameters.AddWithValue("@Id", IdWarehouse);
+
             int dr = (int)cmd.ExecuteScalar();
 
             return dr > 0;
